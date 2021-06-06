@@ -1,0 +1,207 @@
+*{
+   --white-tile: #e6e6df;
+   --black-tile: #b48963;
+
+   --main-bg-color: #333;
+
+   --circle-move-bg-color: #00a800;
+
+   --circle-take-border-bg-color: #c20d0d;
+   --circle-take-bg-color: #f33737;
+
+   --king-checked-tile-bg-color: #d90000;
+
+   --btn-restart-game-bg-color: #fabc2e;
+}
+
+body{
+   margin: 0;
+   padding: 0;
+}
+
+.main{
+   height: 100vh;
+   width: 100%;
+
+   font-size: 12px;
+
+   background-color: var(--main-bg-color);
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.content{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.winner-text{
+   font-size: 1.5rem;
+   color: white;
+
+   margin: 0;
+   padding: 0;
+   padding-bottom: 10px;
+}
+
+.btn{
+   width: 150px;
+
+   font-size: 1.2rem;
+   
+   box-sizing: border-box;
+   padding: 5px;
+   margin-bottom: 10px;
+
+   border-radius: 12px;
+   border: none;
+   border-bottom: 2px solid black;
+
+   background-color: var(--white-tile);
+   color: black;
+
+   cursor: pointer;
+}
+
+.btn:hover{
+   filter: brightness(1.2);
+}
+
+.btn-restart-game{
+   background-color: var(--btn-restart-game-bg-color);
+   display: none;
+}
+
+/* Board */
+
+.board{
+   display: grid;
+   grid-template-columns: repeat(8, 60px);
+   grid-template-rows: repeat(8, 60px);
+}
+
+/* game finished */
+.disabled-board{
+   pointer-events: none;
+   opacity: 0.7;
+}
+
+/* Tile */
+.tile{
+   width: 100%;
+   height: 100%;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   position: relative;
+
+}
+
+.black-tile{
+   background-color: var(--black-tile);
+}
+
+.white-tile{
+   background-color: var(--white-tile);
+}
+
+/* Piece */
+
+.piece{
+   width: 100%;
+   height: 100%;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   cursor: pointer;
+
+}
+
+.piece i{
+   font-size: 2.8rem;
+}
+
+.black-piece{
+   color: black;
+}
+
+.white-piece{
+   color: white;
+
+   text-shadow:-1px 1px 0 #000,
+               1px 1px 0 #000,
+               1px -1px 0 #000,
+               -1px -1px 0 #000;
+}
+
+/* Move circle */
+.circle-move-container{
+   width: 100%;
+   height: 100%;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   cursor: pointer;
+}
+
+.circle-move-container:hover{
+   filter: brightness(1.2)
+}
+
+.circle-move{
+   width: 18px;
+   height: 18px;
+
+   background-color: var(--circle-move-bg-color);
+   border-radius: 50%;
+}
+
+/* Take circle */
+.circle-take-container{
+   width: 100%;
+   height: 100%;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   cursor: pointer;
+
+   position: absolute;
+
+   z-index: 0;
+}
+
+.circle-take-container:hover{
+   filter: brightness(.6)
+}
+
+.circle-take{
+   width: 40px;
+   height: 40px;
+
+   border: 3px solid var(--circle-take-border-bg-color);
+   background-color: var(--circle-take-bg-color);
+   border-radius: 50%;
+
+   opacity: .5;
+}
+
+/* king in check */
+.king-checked{
+   background-color: var(--king-checked-tile-bg-color) !important;
+}
+
+/* ! Helpers */
+.red-tile{
+   background-color: #ffaaaa;
+}
