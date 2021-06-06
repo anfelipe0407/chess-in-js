@@ -16,7 +16,12 @@
 
 // ########################################################################
 
-import { createBoardElement, drawBoard, createNewBoardCopy } from './board.js';
+import {
+   createBoardElement,
+   drawBoard,
+   createNewBoardCopy,
+   addPiecesPointerEvent,
+} from './board.js';
 
 import {
    putPiecesOnInitalState,
@@ -53,6 +58,10 @@ export function startGame() {
 
    // check tiles attacked by every piece
    calculateTilesAttackedByEveryPiece();
+
+   // add pointer events to white and black
+   addPiecesPointerEvent('white');
+   addPiecesPointerEvent('black');
 
    console.log(boardElement);
 }

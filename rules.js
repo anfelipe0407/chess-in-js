@@ -478,6 +478,9 @@ export function endTheGame(winner) {
 
    const restartGameBtn = document.querySelector('.btn-restart-game');
    restartGameBtn.style.display = 'block';
+
+   removePiecesPointerEvent('white');
+   removePiecesPointerEvent('black');
 }
 
 export function asignClickListenerToPromotePawn(
