@@ -47,11 +47,56 @@ export function createBoardElement() {
 
 export function drawBoard(boardElement = getUpdatedBoard()) {
    let boardDiv = document.querySelector('.board');
+   const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
    boardElement.forEach((tile) => {
       // tile.divElement.innerHTML = String(tile.x) + ', ' + String(tile.y);
       boardDiv.append(tile.divElement);
+
+      // letters
+      if (tile.x === 1) {
+         tile.letter = letters[tile.y - 1];
+         appendLetterToTile(tile, tile.letter);
+      }
+
+      // numbers
+      if (tile.y === 8) {
+         tile.number = tile.x;
+         appendNumberToTile(tile, tile.number);
+      }
    });
+}
+
+function appendLetterToTile(tile, letter) {
+   const letterElement = document.createElement('span');
+   letterElement.classList.add('tile-letter');
+   letterElement.textContent = letter;
+
+   if (tile.color === 'white') {
+      letterElement.classList.add('black-tile-letter');
+   }
+
+   if (tile.color === 'black') {
+      letterElement.classList.add('white-tile-letter');
+   }
+
+   tile.divElement.append(letterElement);
+}
+
+function appendNumberToTile(tile, number) {
+   const numberElement = document.createElement('span');
+   numberElement.classList.add('tile-number');
+   numberElement.textContent = number;
+
+   if (tile.color === 'white') {
+      numberElement.classList.add('black-tile-number');
+   }
+
+   if (tile.color === 'black') {
+      numberElement.classList.add('white-tile-number');
+   }
+
+   tile.divElement.append(numberElement);
 }
 
 // * Movement

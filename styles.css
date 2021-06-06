@@ -115,6 +115,46 @@ body{
    background-color: var(--white-tile);
 }
 
+/* tile letter */
+.tile-letter{
+
+   font-size: .9rem;
+
+   position: absolute;
+   bottom: 0;
+   left: 2px;
+}
+
+.black-tile-letter{
+   color: var(--black-tile);
+
+}
+
+.white-tile-letter{
+   color: var(--white-tile);
+
+}
+
+/* tile number */
+.tile-number{
+
+   font-size: .9rem;
+
+   position: absolute;
+   top: 0;
+   right: 2px;
+}
+
+.black-tile-number{
+   color: var(--black-tile);
+
+}
+
+.white-tile-number{
+   color: var(--white-tile);
+
+}
+
 /* Piece */
 
 .piece{
