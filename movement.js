@@ -76,7 +76,7 @@ export function calculatePieceMove(piece) {
       if (piece.movesDone === 0) {
          const kingChecked = getKingCheckedObject();
 
-         if (piece.color === 'white' && !kingChecked.white) {
+         if (piece.color === 'white') {
             const tileInFronOfPawn = getTile(
                pieceTile.x + 1,
                pieceTile.y,
@@ -86,7 +86,7 @@ export function calculatePieceMove(piece) {
             if (!tileInFronOfPawn.piece) {
                tilesToMove.push(getTileToMove(pieceTile.x + 2, pieceTile.y));
             }
-         } else if (piece.color === 'black' && !kingChecked.black) {
+         } else if (piece.color === 'black') {
             const tileInFronOfPawn = getTile(
                pieceTile.x - 1,
                pieceTile.y,

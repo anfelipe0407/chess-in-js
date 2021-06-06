@@ -209,8 +209,6 @@ function asignClickListenerToCircleTake(circleElement, pieceId, tileToTake) {
 
       updateTilesAttacked();
 
-      console.log(getUpdatedBoard());
-
       const checkMate = detectCheckMate(pieceId);
    });
 }

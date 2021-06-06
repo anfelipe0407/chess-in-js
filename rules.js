@@ -362,6 +362,9 @@ export function filterTilesWherePiecesCantMove(tilesToMove, pieceElement) {
          calculateTilesAttackedByEveryPieceOnVirtualBoard(newBoardCopy);
          const kingCheckedCopy = checkIfKingsChecked(newBoardCopy);
 
+         // console.log(newBoardCopy);
+         // console.log(kingCheckedCopy);
+
          if (pieceElement.color === 'white' && !kingCheckedCopy.white) {
             tilesToMoveFilteredFromChecks.push(tileToMove);
          }

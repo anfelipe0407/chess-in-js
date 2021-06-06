@@ -158,10 +158,10 @@ export function asignClickListenersToPieces() {
          if (
             (piece.color === 'white' && kingCheckedObject.white) ||
             (piece.color === 'black' && kingCheckedObject.black) ||
-            (tilesToTake.length >= 1 && tilesToTake[0] !== null)
+            (tilesToMove.length >= 1 && tilesToMove[0] !== null)
          ) {
             // console.time('testing-time');
-            // console.log(tilesToMove);
+            console.log(tilesToMove);
             const pieceElement = getPieceById(piece.id);
             const tilesToMoveFiltered = filterTilesWherePiecesCantMove(
                tilesToMove,
