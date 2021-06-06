@@ -145,7 +145,7 @@ export function setIdsToPieces(boardElement = getUpdatedBoard()) {
 }
 
 export function asignClickListenersToPieces() {
-   const pieces = getAllPieces();
+   const pieces = getAllPieces(getUpdatedBoard());
 
    pieces.forEach((piece) => {
       piece.pieceDivElement.addEventListener('click', () => {
@@ -161,7 +161,7 @@ export function asignClickListenersToPieces() {
             (tilesToMove.length >= 1 && tilesToMove[0] !== null)
          ) {
             // console.time('testing-time');
-            console.log(tilesToMove);
+            // console.log(tilesToMove);
             const pieceElement = getPieceById(piece.id);
             const tilesToMoveFiltered = filterTilesWherePiecesCantMove(
                tilesToMove,

@@ -10,11 +10,23 @@ import {
    resetAttackedTileStatus,
    calculateTilesAttackedByEveryPiece,
    setAttackedTileStatus,
+   updateTilesAttacked,
 } from './movement.js';
 
-import { getPieceById, getTileWherePieceIs, getAllPieces } from './pieces.js';
+import {
+   getPieceById,
+   getTileWherePieceIs,
+   getAllPieces,
+   createPiece,
+   asignClickListenersToPieces,
+} from './pieces.js';
 
-import { getTile, createNewBoardCopy } from './board.js';
+import {
+   getTile,
+   createNewBoardCopy,
+   removePiecesPointerEvent,
+   addPiecesPointerEvent,
+} from './board.js';
 
 export function checkIfKingsChecked(boardElement = getUpdatedBoard()) {
    const kingChecked = {
@@ -466,4 +478,109 @@ export function endTheGame(winner) {
 
    const restartGameBtn = document.querySelector('.btn-restart-game');
    restartGameBtn.style.display = 'block';
+}
+
+export function asignClickListenerToPromotePawn(
+   circleDivElement,
+   piece,
+   tileToMove
+) {
+   // tilesToMove = tilesToTake
+
+   circleDivElement.addEventListener('click', () => {
+      const promotionDiv = document.createElement('div');
+      promotionDiv.classList.add('promotion-container');
+
+      if (piece.color === 'white') {
+         promotionDiv.classList.add('promotion-container-white');
+      }
+
+      if (piece.color === 'black') {
+         promotionDiv.classList.add('promotion-container-black');
+      }
+
+      tileToMove.divElement.append(promotionDiv);
+
+      // append piece to promote
+      for (let i = 0; i < 4; i++) {
+         const piecePromotionDiv = document.createElement('div');
+         piecePromotionDiv.classList.add('promotion-piece');
+
+         const pieceElement = document.createElement('i');
+         pieceElement.classList.add('fas');
+
+         if (i === 0) {
+            pieceElement.classList.add('fa-chess-queen');
+            pieceElement.dataset.pieceNamePromote = 'queen';
+         }
+
+         if (i === 1) {
+            pieceElement.classList.add('fa-chess-rook');
+            pieceElement.dataset.pieceNamePromote = 'rook';
+         }
+
+         if (i === 2) {
+            pieceElement.classList.add('fa-chess-knight');
+            pieceElement.dataset.pieceNamePromote = 'knight';
+         }
+
+         if (i === 3) {
+            pieceElement.classList.add('fa-chess-bishop');
+            pieceElement.dataset.pieceNamePromote = 'bishop';
+         }
+
+         if (piece.color === 'white') pieceElement.classList.add('white-piece');
+         if (piece.color === 'black') pieceElement.classList.add('black-piece');
+
+         piecePromotionDiv.append(pieceElement);
+         promotionDiv.append(piecePromotionDiv);
+
+         piecePromotionDiv.addEventListener('click', () => {
+            promotePawnToPiece(tileToMove, piece, pieceElement);
+
+            promotionDiv.remove();
+         });
+      }
+
+      removePiecesPointerEvent('white');
+      removePiecesPointerEvent('black');
+   });
+}
+
+function promotePawnToPiece(tile, piece, pieceElement) {
+   // const newPieceDivElement = document.createElement('div');
+   // newPieceDivElement.classList.add('piece');
+
+   // newPieceDivElement.append(pieceElement);
+   // console.log(pieceElement.dataset.pieceNamePromote);
+   const promotedPiece = createPiece(pieceElement.dataset.pieceNamePromote);
+
+   if (piece.color === 'white') {
+      promotedPiece.color = 'white';
+      promotedPiece.pieceDivElement.classList.add('white-piece');
+      promotedPiece.id = piece.id;
+   } else if (piece.color === 'black') {
+      promotedPiece.color = 'black';
+      promotedPiece.pieceDivElement.classList.add('black-piece');
+      promotedPiece.id = piece.id;
+   }
+
+   // promotedPiece.pieceDivElement = newPieceDivElement;
+
+   if (tile.piece) {
+      tile.piece.pieceDivElement.remove();
+      delete tile.piece;
+   }
+
+   tile.piece = { ...promotedPiece };
+   tile.divElement.append(promotedPiece.pieceDivElement);
+
+   updateTilesAttacked();
+   asignClickListenersToPieces();
+   addPiecesPointerEvent('white');
+   addPiecesPointerEvent('black');
+
+   detectCheckMate(piece.id);
+
+   console.log(promotedPiece);
 }

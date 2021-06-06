@@ -10,7 +10,7 @@ import {
 
 import { getAllPieces, getPieceById } from './pieces.js';
 
-import { detectCheckMate } from './rules.js';
+import { detectCheckMate, asignClickListenerToPromotePawn } from './rules.js';
 
 export function createBoardElement() {
    const boardElement = [];
@@ -91,6 +91,31 @@ export function drawTilesToMovesCircles(tiles, pieceElement) {
                tile
             );
          }
+      }
+
+      // white pawn promotion
+      if (
+         pieceElement.pieceName === 'pawn' &&
+         pieceElement.color === 'white' &&
+         tile.x === 8
+      ) {
+         asignClickListenerToPromotePawn(
+            circleDivElementContainer,
+            pieceElement,
+            tile
+         );
+      }
+      // black pawn promotion
+      if (
+         pieceElement.pieceName === 'pawn' &&
+         pieceElement.color === 'black' &&
+         tile.x === 1
+      ) {
+         asignClickListenerToPromotePawn(
+            circleDivElementContainer,
+            pieceElement,
+            tile
+         );
       }
 
       // ! add click listener
@@ -185,6 +210,31 @@ export function drawTilesToTakeCircles(tiles, pieceElement) {
          pieceElement.id,
          tile
       );
+
+      // white pawn promotion
+      if (
+         pieceElement.pieceName === 'pawn' &&
+         pieceElement.color === 'white' &&
+         tile.x === 8
+      ) {
+         asignClickListenerToPromotePawn(
+            takeCircleDivElementContainer,
+            pieceElement,
+            tile
+         );
+      }
+      // black pawn promotion
+      if (
+         pieceElement.pieceName === 'pawn' &&
+         pieceElement.color === 'black' &&
+         tile.x === 1
+      ) {
+         asignClickListenerToPromotePawn(
+            takeCircleDivElementContainer,
+            pieceElement,
+            tile
+         );
+      }
 
       tile.moveTakeCircleDivElementContainer = takeCircleDivElementContainer;
 
@@ -289,4 +339,26 @@ export function createNewBoardCopy(boardElement) {
    }
 
    return newBoardElement;
+}
+
+export function removePiecesPointerEvent(
+   piecesColor,
+   boardElement = getUpdatedBoard()
+) {
+   boardElement.forEach((tile) => {
+      if (tile.piece && tile.piece.color === piecesColor) {
+         tile.piece.pieceDivElement.style.pointerEvents = 'none';
+      }
+   });
+}
+
+export function addPiecesPointerEvent(
+   piecesColor,
+   boardElement = getUpdatedBoard()
+) {
+   boardElement.forEach((tile) => {
+      if (tile.piece && tile.piece.color === piecesColor) {
+         tile.piece.pieceDivElement.style.pointerEvents = 'auto';
+      }
+   });
 }

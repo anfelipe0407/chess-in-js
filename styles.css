@@ -12,6 +12,9 @@
    --king-checked-tile-bg-color: #d90000;
 
    --btn-restart-game-bg-color: #fabc2e;
+
+   --promotion-box-bg-color: #fabc2e;
+   --promotion-piece-box-bg-color-hover: #d89d14;
 }
 
 body{
@@ -99,6 +102,8 @@ body{
    justify-content: center;
 
    position: relative;
+
+   overflow-y: visible;
 
 }
 
@@ -199,6 +204,55 @@ body{
 /* king in check */
 .king-checked{
    background-color: var(--king-checked-tile-bg-color) !important;
+}
+
+/* Promotion */
+.promotion-container{
+
+   position: absolute;
+
+   width: 100%;
+   height: 400%;
+
+   background-color: var(--promotion-box-bg-color);
+   z-index: 10;
+
+   display: grid;
+   grid-template-columns: 1fr;
+   grid-template-rows: repeat(4, 1fr);
+
+   gap: 2px;
+}
+
+.promotion-container-white{
+   top: 0;
+}
+
+.promotion-container-black{
+   bottom: 0;
+}
+
+
+
+.promotion-piece{
+   width: 100%;
+   height: 100%;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   cursor: pointer;
+
+   transition: background-color 200ms ease-in-out;
+}
+
+.promotion-piece:hover{
+   background-color: var(--promotion-piece-box-bg-color-hover);
+}
+
+.promotion-piece i{
+   font-size: 2.8rem;
 }
 
 /* ! Helpers */

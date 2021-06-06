@@ -54,7 +54,7 @@ export function startGame() {
    // check tiles attacked by every piece
    calculateTilesAttackedByEveryPiece();
 
-   // console.log(boardElement);
+   console.log(boardElement);
 }
 
 // runs in the initialitation

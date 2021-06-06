@@ -73,6 +73,7 @@ export function calculatePieceMove(piece) {
          ? tilesToMove.push(getTileToMove(pieceTile.x + 1, pieceTile.y))
          : tilesToMove.push(getTileToMove(pieceTile.x - 1, pieceTile.y));
 
+      // Double advance by a pawn
       if (piece.movesDone === 0) {
          const kingChecked = getKingCheckedObject();
 
@@ -98,6 +99,8 @@ export function calculatePieceMove(piece) {
             }
          }
       }
+
+      // detectPromotionByPawn(tilesToMove, piece);
 
       return tilesToMove;
    }
@@ -360,6 +363,8 @@ export function calculatePieceTake(piece) {
             tilesToTakeFiltered.push(tile);
          }
       });
+
+      const pawnTile = getTileWherePieceIs(piece.id);
 
       return tilesToTakeFiltered;
    }
