@@ -77,9 +77,25 @@ export function calculatePieceMove(piece) {
          const kingChecked = getKingCheckedObject();
 
          if (piece.color === 'white' && !kingChecked.white) {
-            tilesToMove.push(getTileToMove(pieceTile.x + 2, pieceTile.y));
+            const tileInFronOfPawn = getTile(
+               pieceTile.x + 1,
+               pieceTile.y,
+               boardElement
+            );
+
+            if (!tileInFronOfPawn.piece) {
+               tilesToMove.push(getTileToMove(pieceTile.x + 2, pieceTile.y));
+            }
          } else if (piece.color === 'black' && !kingChecked.black) {
-            tilesToMove.push(getTileToMove(pieceTile.x - 2, pieceTile.y));
+            const tileInFronOfPawn = getTile(
+               pieceTile.x - 1,
+               pieceTile.y,
+               boardElement
+            );
+
+            if (!tileInFronOfPawn.piece) {
+               tilesToMove.push(getTileToMove(pieceTile.x - 2, pieceTile.y));
+            }
          }
       }
 
