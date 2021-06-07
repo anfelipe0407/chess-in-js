@@ -37,7 +37,6 @@ export function createBoardElement() {
 
          tile.divElement.addEventListener('contextmenu', (e) => {
             e.preventDefault();
-            removeAllMarkedTiles();
             markTile(tile.divElement);
          });
 
@@ -447,7 +446,12 @@ export function addPiecesPointerEvent(
 }
 
 function markTile(tileDivElement) {
-   tileDivElement.classList.add('marked-tile');
+   if (tileDivElement.classList.contains('marked-tile')) {
+      tileDivElement.classList.remove('marked-tile');
+   } else {
+      removeAllMarkedTiles();
+      tileDivElement.classList.add('marked-tile');
+   }
 }
 
 export function removeAllMarkedTiles() {
