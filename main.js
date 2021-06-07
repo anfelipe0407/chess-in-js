@@ -42,7 +42,10 @@ import {
    updateTilesAttackedOnVirtualBoard,
 } from './rules.js';
 
-import { addRecordToHistoricMoves } from './move-history.js';
+import {
+   addRecordToHistoricMoves,
+   resetHistoricMovesObject,
+} from './move-history.js';
 
 let boardElement = createBoardElement();
 
@@ -79,6 +82,8 @@ const kingChecked = checkIfKingsChecked(boardElement);
 // set event listener to restart game button
 const restartGameBtn = document.querySelector('.btn-restart-game');
 restartGameBtn.addEventListener('click', () => {
+   resetHistoricMovesObject();
+
    restartGameBtn.style.display = 'none';
 
    const winnerTextElement = document.querySelector('.winner-text');

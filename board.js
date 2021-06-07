@@ -35,6 +35,12 @@ export function createBoardElement() {
             whitePiecesAttacking: 0,
          };
 
+         tile.divElement.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            removeAllMarkedTiles();
+            markTile(tile.divElement);
+         });
+
          // set color for tile
          if ((x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0)) {
             tile.color = 'white';
@@ -195,6 +201,8 @@ function asignClickListenerToCircleMove(circleElement, pieceId, tileToMove) {
       removeAllMovesCircles();
       removeAllTakeCircles();
 
+      removeAllMarkedTiles();
+
       const pieceTile = getTileWherePieceIsById(pieceId);
 
       movePieceToTile(pieceId, tileToMove);
@@ -317,6 +325,8 @@ function asignClickListenerToCircleTake(circleElement, pieceId, tileToTake) {
       removeAllMovesCircles();
       removeAllTakeCircles();
 
+      removeAllMarkedTiles();
+
       const pieceTile = getTileWherePieceIsById(pieceId);
 
       movePieceToTileTaking(pieceId, tileToTake);
@@ -433,5 +443,17 @@ export function addPiecesPointerEvent(
       if (tile.piece && tile.piece.color === piecesColor) {
          tile.piece.pieceDivElement.style.pointerEvents = 'auto';
       }
+   });
+}
+
+function markTile(tileDivElement) {
+   tileDivElement.classList.add('marked-tile');
+}
+
+export function removeAllMarkedTiles() {
+   const boardDiv = document.querySelector('.board');
+
+   boardDiv.childNodes.forEach((tile) => {
+      tile.classList.remove('marked-tile');
    });
 }

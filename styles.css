@@ -1,6 +1,7 @@
 *{
    --white-tile: #e6e6df;
    --black-tile: #b48963;
+   --marked-tile: #e14f4f;
    
    --main-bg-color: #333;
 
@@ -194,7 +195,10 @@ body{
    position: relative;
 
    overflow-y: visible;
+}
 
+.marked-tile{
+   background-color: var(--marked-tile) !important;
 }
 
 .black-tile{

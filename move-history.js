@@ -10,12 +10,18 @@ import {
    appendNumberToTile,
    createNewBoardCopy,
    getTile,
+   removeAllMarkedTiles,
    removePiecesPointerEvent,
 } from './board.js';
 
 import { getPieceById, getTileWherePieceIsById } from './pieces.js';
 
-import { checkIfKingsChecked, detectCheckMate } from './rules.js';
+import {
+   checkIfKingsChecked,
+   detectCheckMate,
+   putInRedCheckedKingsTile,
+   removeAllRedCheckedKingsTiles,
+} from './rules.js';
 
 export function addRecordToHistoricMoves(
    boardElement,
@@ -28,6 +34,15 @@ export function addRecordToHistoricMoves(
 
    move.board = createNewBoardCopy(boardElement);
    move.action = action;
+
+   move.isCheck = false;
+
+   const kingChecked = checkIfKingsChecked(move.board);
+   if (kingChecked.white || kingChecked.black) {
+      move.isCheck = true;
+      console.log(move);
+      console.log(move.isCheck);
+   }
 
    if (pieceId !== null) {
       const pieceObject = getPieceById(pieceId, boardElement);
@@ -128,11 +143,17 @@ function addRecordToHistoricMovesPanel(move, moveNumber) {
    }
 
    moveHistoricItem.addEventListener('click', () => {
-      drawHistoricBoard(move.board, move.piece, move.action);
+      drawHistoricBoard(move.board, move.piece, move.action, move.isCheck);
+
+      removeAllMarkedTiles();
 
       // reset and add selected move history class
       removeAllSelectedHistoricMoveClass();
       moveHistoricItem.classList.add('selected-move-history-item');
+
+      // highlight last move played in historic board
+      removeAllHighlightedTiles(getUpdatedBoard());
+      highlightTilesLastMove(getUpdatedBoard(), move.tileFrom, move.tileTo);
 
       // detect if it is the last move played
       // if so allow movement, otherwise dont
@@ -156,7 +177,18 @@ function addRecordToHistoricMovesPanel(move, moveNumber) {
    });
 }
 
-function drawHistoricBoard(boardElement, pieceMoved, action) {
+function drawHistoricBoard(boardElement, pieceMoved, action, isCheck) {
+   removeAllRedCheckedKingsTiles(boardElement);
+
+   if (isCheck) {
+      if (pieceMoved.color === 'white') {
+         putInRedCheckedKingsTile(boardElement, { white: false, black: true });
+      }
+      if (pieceMoved.color === 'black') {
+         putInRedCheckedKingsTile(boardElement, { white: true, black: false });
+      }
+   }
+
    const boardDiv = document.querySelector('.board');
 
    boardDiv.childNodes.forEach((tile) => {
@@ -198,6 +230,17 @@ function removeAllSelectedHistoricMoveClass() {
       movesHistoryElement.childNodes.forEach((child) => {
          child.classList.remove('selected-move-history-item');
       });
+   }
+}
+
+export function resetHistoricMovesObject() {
+   const historicMovesObject = getHistoricMovesObject();
+   historicMovesObject.length = 0;
+
+   const movesDivContainer = document.querySelector('.moves-history');
+   console.log(movesDivContainer);
+   while (movesDivContainer.hasChildNodes()) {
+      movesDivContainer.removeChild(movesDivContainer.lastChild);
    }
 }
 
