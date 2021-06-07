@@ -1,8 +1,11 @@
 *{
    --white-tile: #e6e6df;
    --black-tile: #b48963;
-
+   
    --main-bg-color: #333;
+
+   --move-history-bg-color: #c2c2c2;
+   --move-history-item-bg-color: #959595;
 
    --circle-move-bg-color: #00a800;
 
@@ -78,7 +81,94 @@ body{
    display: none;
 }
 
-/* Board */
+/* moves history */
+.move-history-container{
+   width: 100%;
+
+   box-sizing: border-box;
+   padding: 5px;
+   margin: 5px 0;
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+
+   background-color: var(--move-history-bg-color);
+
+   display: none;
+}
+.moves-history{
+   height: 100%;
+   width: 100%;
+
+   max-width: 460px;
+
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+
+   flex-wrap: nowrap;
+
+   box-sizing: border-box;
+   padding-bottom: 2px;
+   overflow-x: scroll;
+}
+
+.moves-history::-webkit-scrollbar {
+   height: 6px;
+}
+
+.moves-history::-webkit-scrollbar-track {
+   background: #cacaca;
+}
+
+.moves-history::-webkit-scrollbar-thumb {
+   background: #888;
+}
+
+.moves-history::-webkit-scrollbar-thumb:hover {
+   background: #555;
+}
+
+.move-history-item{
+   box-sizing: border-box;
+   padding: 6px;
+   margin-right: 4px;
+
+   font-size: .7rem;
+   white-space: nowrap;
+
+   border-radius: 10px;
+
+   color: black;
+
+   background-color: var(--move-history-item-bg-color);
+
+   cursor: pointer;
+
+   transition: background-color 100ms ease-in-out;
+}
+
+.move-history-item:hover{
+   background-color: #d8d046;
+}
+
+/* only when it is clicked and show on the board */
+.selected-move-history-item{
+   background-color: #d8d046;
+}
+
+/* last move done */
+
+.last-move-origin-tile{
+   background-color: #d8d046 !important;
+}
+
+.last-move-final-tile{
+   background-color: #dad245 !important;
+}
+
+/* ! Board */
 
 .board{
    display: grid;
@@ -293,6 +383,75 @@ body{
 
 .promotion-piece i{
    font-size: 2.8rem;
+}
+
+/* ! RESPONSIVE */
+
+@media screen and (max-width: 500px){
+   .move-history-container{
+      max-width: 320px;
+   }
+
+   .board{
+      grid-template-columns: repeat(8, 40px);
+      grid-template-rows: repeat(8, 40px);
+   }
+
+   .tile-number, .tile-letter{
+      font-size: .7rem;
+   }
+
+   .piece i{
+      font-size: 1.8rem;
+   }
+
+   .promotion-piece i{
+      font-size: 1.8rem;
+   }
+
+   .circle-move{
+      width: 12px;
+      height: 12px;
+   }
+
+   .circle-take{
+      width: 29px;
+      height: 29px;
+   }
+}
+
+
+@media screen and (max-width: 325px){
+   .move-history-container{
+      max-width: 264px;
+   }
+
+   .board{
+      grid-template-columns: repeat(8, 33px);
+      grid-template-rows: repeat(8, 33px);
+   }
+
+   .tile-number, .tile-letter{
+      font-size: .6rem;
+   }
+
+   .piece i{
+      font-size: 1.4rem;
+   }
+
+   .promotion-piece i{
+      font-size: 1.4rem;
+   }
+
+   .circle-move{
+      width: 11px;
+      height: 11px;
+   }
+
+   .circle-take{
+      width: 23px;
+      height: 23px;
+   }
 }
 
 /* ! Helpers */

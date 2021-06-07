@@ -35,7 +35,7 @@ export function checkIfKingsChecked(boardElement = getUpdatedBoard()) {
    };
 
    boardElement.forEach((tile) => {
-      if (tile.piece && tile.piece.pieceName == 'king') {
+      if (tile.piece && tile.piece.pieceName === 'king') {
          const kingTile = getTileWherePieceIs(tile.piece.id, boardElement);
 
          if (tile.piece.color === 'white') {
@@ -432,7 +432,6 @@ export function detectCheckMate(pieceId, allPieces = getAllPieces()) {
             tilesToTake = tilesToTakeFiltered;
          }
 
-         // ! change this
          if (pieceColorThatJustHasMoved !== piece.color) {
             allPossiblesTilesOfMove.push(tilesToMove);
             allPossiblesTilesOfMove.push(tilesToTake);
@@ -584,6 +583,4 @@ function promotePawnToPiece(tile, piece, pieceElement) {
    addPiecesPointerEvent('black');
 
    detectCheckMate(piece.id);
-
-   console.log(promotedPiece);
 }

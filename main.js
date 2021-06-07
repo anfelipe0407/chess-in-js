@@ -3,6 +3,7 @@
 
 // AUTHOR: @anfelipe0407 on GitHub
 // Link to profile: https://github.com/anfelipe0407
+// Test it online: https://anfelipe0407.github.io/chess-in-js/
 
 // ########################################################################
 // ########################################################################
@@ -12,7 +13,7 @@
 // ########################################################################
 
 // All code is original, no guides were used for the algorithms
-// It can have bugs
+// It may have bugs
 
 // ########################################################################
 
@@ -40,6 +41,8 @@ import {
    movePieceInVirtualBoard,
    updateTilesAttackedOnVirtualBoard,
 } from './rules.js';
+
+import { addRecordToHistoricMoves } from './move-history.js';
 
 let boardElement = createBoardElement();
 
@@ -91,6 +94,11 @@ restartGameBtn.addEventListener('click', () => {
    startGame();
 });
 
+// create historic move object and save the firt position of the board
+
+const historicMoves = [];
+addRecordToHistoricMoves(boardElement);
+
 // ! Helpers
 export function getUpdatedBoard() {
    return boardElement;
@@ -103,4 +111,8 @@ export function getKingCheckedObject() {
 export function setKingCheckedObject(whiteKing = false, blackKing = false) {
    kingChecked.white = whiteKing;
    kingChecked.black = blackKing;
+}
+
+export function getHistoricMovesObject() {
+   return historicMoves;
 }

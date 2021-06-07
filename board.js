@@ -8,9 +8,15 @@ import {
    updateTilesAttacked,
 } from './movement.js';
 
-import { getAllPieces, getPieceById } from './pieces.js';
+import {
+   getAllPieces,
+   getPieceById,
+   getTileWherePieceIsById,
+} from './pieces.js';
 
 import { detectCheckMate, asignClickListenerToPromotePawn } from './rules.js';
+
+import { addRecordToHistoricMoves } from './move-history.js';
 
 export function createBoardElement() {
    const boardElement = [];
@@ -50,7 +56,6 @@ export function drawBoard(boardElement = getUpdatedBoard()) {
    const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
    boardElement.forEach((tile) => {
-      // tile.divElement.innerHTML = String(tile.x) + ', ' + String(tile.y);
       boardDiv.append(tile.divElement);
 
       // letters
@@ -67,7 +72,7 @@ export function drawBoard(boardElement = getUpdatedBoard()) {
    });
 }
 
-function appendLetterToTile(tile, letter) {
+export function appendLetterToTile(tile, letter) {
    const letterElement = document.createElement('span');
    letterElement.classList.add('tile-letter');
    letterElement.textContent = letter;
@@ -83,7 +88,7 @@ function appendLetterToTile(tile, letter) {
    tile.divElement.append(letterElement);
 }
 
-function appendNumberToTile(tile, number) {
+export function appendNumberToTile(tile, number) {
    const numberElement = document.createElement('span');
    numberElement.classList.add('tile-number');
    numberElement.textContent = number;
@@ -189,11 +194,22 @@ function asignClickListenerToCircleMove(circleElement, pieceId, tileToMove) {
    circleElement.addEventListener('click', () => {
       removeAllMovesCircles();
       removeAllTakeCircles();
+
+      const pieceTile = getTileWherePieceIsById(pieceId);
+
       movePieceToTile(pieceId, tileToMove);
 
-      updateTilesAttacked();
+      updateTilesAttacked(getUpdatedBoard());
 
-      const checkMate = detectCheckMate(pieceId);
+      addRecordToHistoricMoves(
+         getUpdatedBoard(),
+         pieceTile,
+         pieceId,
+         tileToMove,
+         'move'
+      );
+
+      // detectCheckMate(pieceId);
    });
 }
 
@@ -300,11 +316,21 @@ function asignClickListenerToCircleTake(circleElement, pieceId, tileToTake) {
    circleElement.addEventListener('click', () => {
       removeAllMovesCircles();
       removeAllTakeCircles();
+
+      const pieceTile = getTileWherePieceIsById(pieceId);
+
       movePieceToTileTaking(pieceId, tileToTake);
 
-      updateTilesAttacked();
+      updateTilesAttacked(getUpdatedBoard());
+      addRecordToHistoricMoves(
+         getUpdatedBoard(),
+         pieceTile,
+         pieceId,
+         tileToTake,
+         'take'
+      );
 
-      const checkMate = detectCheckMate(pieceId);
+      // detectCheckMate(pieceId);
    });
 }
 
@@ -365,6 +391,7 @@ export function createNewBoardCopy(boardElement) {
    for (let i = 0; i < boardElement.length; i++) {
       const tile = {};
 
+      tile.divElement = boardElement[i].divElement;
       tile.x = boardElement[i].x;
       tile.y = boardElement[i].y;
       tile.color = boardElement[i].color;
@@ -374,6 +401,7 @@ export function createNewBoardCopy(boardElement) {
       if (boardElement[i].piece) {
          tile.piece = {};
 
+         tile.piece.pieceDivElement = boardElement[i].piece.pieceDivElement;
          tile.piece.id = boardElement[i].piece.id;
          tile.piece.pieceName = boardElement[i].piece.pieceName;
          tile.piece.color = boardElement[i].piece.color;
