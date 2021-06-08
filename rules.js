@@ -478,6 +478,21 @@ export function detectCheckMate(pieceId, allPieces = getAllPieces()) {
       }, 100);
    }
 
+   // detect draw
+
+   let onlyKingsOnBoard = true;
+
+   allPieces.forEach((piece) => {
+      if (piece.pieceName !== 'king') {
+         onlyKingsOnBoard = false;
+         console.log(piece.pieceName);
+      }
+   });
+
+   if (onlyKingsOnBoard) {
+      drawGame();
+   }
+
    return checkMate;
 }
 
@@ -487,6 +502,20 @@ export function endTheGame(winner) {
 
    const winnerTextElement = document.querySelector('.winner-text');
    winnerTextElement.textContent = 'Game finished: ' + winner + ' wins !!';
+
+   const restartGameBtn = document.querySelector('.btn-restart-game');
+   restartGameBtn.style.display = 'block';
+
+   removePiecesPointerEvent('white');
+   removePiecesPointerEvent('black');
+}
+
+function drawGame() {
+   const boardDivElement = document.querySelector('.board');
+   boardDivElement.classList.add('disabled-board');
+
+   const winnerTextElement = document.querySelector('.winner-text');
+   winnerTextElement.textContent = 'Game finished: draw.';
 
    const restartGameBtn = document.querySelector('.btn-restart-game');
    restartGameBtn.style.display = 'block';
