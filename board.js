@@ -190,7 +190,7 @@ export function drawTilesToMovesCircles(tiles, pieceElement) {
    });
 }
 
-function removeAllMovesCircles(boardElement = getUpdatedBoard()) {
+export function removeAllMovesCircles(boardElement = getUpdatedBoard()) {
    boardElement.forEach((tile) => {
       if (tile.moveCircleDivElementContainer) {
          tile.moveCircleDivElementContainer.remove();
@@ -322,7 +322,7 @@ export function drawTilesToTakeCircles(tiles, pieceElement) {
    });
 }
 
-function removeAllTakeCircles(boardElement = getUpdatedBoard()) {
+export function removeAllTakeCircles(boardElement = getUpdatedBoard()) {
    boardElement.forEach((tile) => {
       if (tile.moveTakeCircleDivElementContainer) {
          tile.moveTakeCircleDivElementContainer.remove();

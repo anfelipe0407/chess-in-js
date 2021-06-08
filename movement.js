@@ -2,6 +2,7 @@ import {
    getUpdatedBoard,
    setKingCheckedObject,
    getKingCheckedObject,
+   getHistoricMovesObject,
 } from './main.js';
 
 import {
@@ -11,14 +12,24 @@ import {
    getTileWherePieceIsById,
 } from './pieces.js';
 
-import { getTile, getTileToMove, getTileToTake } from './board.js';
+import {
+   getTile,
+   getTileToMove,
+   getTileToTake,
+   removeAllMovesCircles,
+   removeAllTakeCircles,
+   removeAllMarkedTiles,
+} from './board.js';
 
 import {
    checkIfKingsChecked,
    putInRedCheckedKingsTile,
    removeAllRedCheckedKingsTiles,
    setAttackedTileStatusOnVirtualBoard,
+   changeMovementTurn,
 } from './rules.js';
+
+import { addRecordToHistoricMoves } from './move-history.js';
 
 export function calculatePieceMove(piece) {
    const piecesMovement = {
@@ -364,7 +375,86 @@ export function calculatePieceTake(piece) {
          }
       });
 
-      const pawnTile = getTileWherePieceIs(piece.id);
+      // En passant
+      if (piece.color === 'white') {
+         if (pieceTile.x === 5) {
+            const tileLeft = getTileToTake(pieceTile.x, pieceTile.y - 1);
+
+            if (
+               tileLeft &&
+               tileLeft.piece &&
+               tileLeft.piece.pieceName === 'pawn' &&
+               tileLeft.piece.movesDone === 1
+            ) {
+               const historicMove = getHistoricMovesObject();
+               if (
+                  historicMove[historicMove.length - 1].piece.id ===
+                  tileLeft.piece.id
+               ) {
+                  tilesToTakeFiltered.push(getTile(tileLeft.x + 1, tileLeft.y));
+               }
+            }
+
+            const tileRight = getTileToTake(pieceTile.x, pieceTile.y + 1);
+
+            if (
+               tileRight &&
+               tileRight.piece &&
+               tileRight.piece.pieceName === 'pawn' &&
+               tileRight.piece.movesDone === 1
+            ) {
+               const historicMove = getHistoricMovesObject();
+               if (
+                  historicMove[historicMove.length - 1].piece.id ===
+                  tileRight.piece.id
+               ) {
+                  tilesToTakeFiltered.push(
+                     getTile(tileRight.x + 1, tileRight.y)
+                  );
+               }
+            }
+         }
+      }
+
+      if (piece.color === 'black') {
+         if (pieceTile.x === 4) {
+            const tileLeft = getTileToTake(pieceTile.x, pieceTile.y - 1);
+
+            if (
+               tileLeft &&
+               tileLeft.piece &&
+               tileLeft.piece.pieceName === 'pawn' &&
+               tileLeft.piece.movesDone === 1
+            ) {
+               const historicMove = getHistoricMovesObject();
+               if (
+                  historicMove[historicMove.length - 1].piece.id ===
+                  tileLeft.piece.id
+               ) {
+                  tilesToTakeFiltered.push(getTile(tileLeft.x - 1, tileLeft.y));
+               }
+            }
+
+            const tileRight = getTileToTake(pieceTile.x, pieceTile.y + 1);
+
+            if (
+               tileRight &&
+               tileRight.piece &&
+               tileRight.piece.pieceName === 'pawn' &&
+               tileRight.piece.movesDone === 1
+            ) {
+               const historicMove = getHistoricMovesObject();
+               if (
+                  historicMove[historicMove.length - 1].piece.id ===
+                  tileRight.piece.id
+               ) {
+                  tilesToTakeFiltered.push(
+                     getTile(tileRight.x - 1, tileRight.y)
+                  );
+               }
+            }
+         }
+      }
 
       return tilesToTakeFiltered;
    }
@@ -843,8 +933,32 @@ export function movePieceToTileTaking(
    let actualTileToMove = getTile(tileToMove.x, tileToMove.y);
    let pieceTile = getTileWherePieceIs(pieceId);
 
-   // remove the piece taked
-   actualTileToMove.piece.pieceDivElement.remove();
+   if (actualTileToMove.piece) {
+      // remove the piece taked
+      actualTileToMove.piece.pieceDivElement.remove();
+   } else {
+      if (pieceTile.piece.pieceName === 'pawn') {
+         // WHITE PAWN
+         if (pieceTile.piece.color === 'white') {
+            const takenPawnTile = getTile(tileToMove.x - 1, tileToMove.y);
+
+            if (takenPawnTile.piece) {
+               takenPawnTile.piece.pieceDivElement.remove();
+               delete takenPawnTile.piece;
+            }
+         }
+
+         // BLACK PAWN
+         if (pieceTile.piece.color === 'black') {
+            const takenPawnTile = getTile(tileToMove.x + 1, tileToMove.y);
+
+            if (takenPawnTile.piece) {
+               takenPawnTile.piece.pieceDivElement.remove();
+               delete takenPawnTile.piece;
+            }
+         }
+      }
+   }
 
    // move the piece
    actualTileToMove.piece = pieceTile.piece;
