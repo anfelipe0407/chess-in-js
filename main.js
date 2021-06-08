@@ -37,6 +37,7 @@ import {
 } from './movement.js';
 
 import {
+   changeMovementTurn,
    checkIfKingsChecked,
    movePieceInVirtualBoard,
    updateTilesAttackedOnVirtualBoard,
@@ -68,6 +69,9 @@ export function startGame() {
    // add pointer events to white and black
    addPiecesPointerEvent('white');
    addPiecesPointerEvent('black');
+
+   // Remove click events on black pieces and add it to white pieces
+   changeMovementTurn('white');
 
    console.log(boardElement);
 }

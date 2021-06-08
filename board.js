@@ -1,4 +1,4 @@
-import { getUpdatedBoard } from './main.js';
+import { getHistoricMovesObject, getUpdatedBoard } from './main.js';
 
 import {
    movePieceToTile,
@@ -14,7 +14,11 @@ import {
    getTileWherePieceIsById,
 } from './pieces.js';
 
-import { detectCheckMate, asignClickListenerToPromotePawn } from './rules.js';
+import {
+   detectCheckMate,
+   asignClickListenerToPromotePawn,
+   changeMovementTurn,
+} from './rules.js';
 
 import { addRecordToHistoricMoves } from './move-history.js';
 
@@ -216,6 +220,14 @@ function asignClickListenerToCircleMove(circleElement, pieceId, tileToMove) {
          'move'
       );
 
+      const pieceElement = getPieceById(pieceId);
+
+      if (pieceElement.color === 'white') {
+         changeMovementTurn('black');
+      } else {
+         changeMovementTurn('white');
+      }
+
       // detectCheckMate(pieceId);
    });
 }
@@ -338,6 +350,14 @@ function asignClickListenerToCircleTake(circleElement, pieceId, tileToTake) {
          tileToTake,
          'take'
       );
+
+      const pieceElement = getPieceById(pieceId);
+
+      if (pieceElement.color === 'white') {
+         changeMovementTurn('black');
+      } else {
+         changeMovementTurn('white');
+      }
 
       // detectCheckMate(pieceId);
    });

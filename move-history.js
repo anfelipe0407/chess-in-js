@@ -34,14 +34,11 @@ export function addRecordToHistoricMoves(
 
    move.board = createNewBoardCopy(boardElement);
    move.action = action;
-
    move.isCheck = false;
 
    const kingChecked = checkIfKingsChecked(move.board);
    if (kingChecked.white || kingChecked.black) {
       move.isCheck = true;
-      console.log(move);
-      console.log(move.isCheck);
    }
 
    if (pieceId !== null) {
@@ -79,9 +76,6 @@ function addRecordToHistoricMovesPanel(move, moveNumber) {
    moveHistoricItem.classList.add('move-history-item');
 
    moveHistoricItem.textContent += String(moveNumber) + '. ';
-
-   // moveHistoricItem.textContent +=
-   //    String(move.piece.pieceName)[0].toUpperCase();
 
    const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -121,7 +115,9 @@ function addRecordToHistoricMovesPanel(move, moveNumber) {
       moveHistoricItem.textContent += '+';
    }
 
+   move.isCheckMate = false;
    if (checkMate) {
+      move.isCheckMate = true;
       moveHistoricItem.textContent += '#';
    }
 
@@ -171,8 +167,16 @@ function addRecordToHistoricMovesPanel(move, moveNumber) {
             getHistoricMovesObject().length - 2
          ] === moveHistoricItem
       ) {
-         addPiecesPointerEvent('white');
-         addPiecesPointerEvent('black');
+         if (move.piece.color === 'white') {
+            addPiecesPointerEvent('black');
+         } else {
+            addPiecesPointerEvent('white');
+         }
+
+         if (move.isCheckMate) {
+            removePiecesPointerEvent('white');
+            removePiecesPointerEvent('black');
+         }
       }
    });
 }
@@ -238,7 +242,6 @@ export function resetHistoricMovesObject() {
    historicMovesObject.length = 0;
 
    const movesDivContainer = document.querySelector('.moves-history');
-   console.log(movesDivContainer);
    while (movesDivContainer.hasChildNodes()) {
       movesDivContainer.removeChild(movesDivContainer.lastChild);
    }

@@ -394,6 +394,19 @@ export function filterTilesWherePiecesCantMove(tilesToMove, pieceElement) {
    return tilesToMoveFilteredFromChecks;
 }
 
+// change movement turn
+export function changeMovementTurn(turnColor) {
+   if (turnColor === 'white') {
+      addPiecesPointerEvent('white');
+      removePiecesPointerEvent('black');
+   }
+
+   if (turnColor === 'black') {
+      addPiecesPointerEvent('black');
+      removePiecesPointerEvent('white');
+   }
+}
+
 // ! end the game
 export function detectCheckMate(pieceId, allPieces = getAllPieces()) {
    // check if it is checkmate by counting the possibles tiles where all pieces can move
