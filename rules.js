@@ -485,7 +485,6 @@ export function detectCheckMate(pieceId, allPieces = getAllPieces()) {
    allPieces.forEach((piece) => {
       if (piece.pieceName !== 'king') {
          onlyKingsOnBoard = false;
-         console.log(piece.pieceName);
       }
    });
 
